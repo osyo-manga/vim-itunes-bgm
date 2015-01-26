@@ -1,4 +1,4 @@
-#bgm.vim
+#itunes-bgm.vim
 
 iTunes ストアのサンプル曲の再生を非同期で行う
 
@@ -18,15 +18,15 @@ iTunes ストアのサンプル曲の再生を非同期で行う
 
 ```
 " 引数のワードにマッチする曲のランダム再生を開始
-:BGMStart アイドルマスター
+:ITunesBGMStart アイドルマスター
 
 " 再生を停止
-:BGMStop
+:ITunesBGMStop
 
 " 次の曲へ移動
-:BGMNext
+:ITunesBGMNext
 
-" :BGMStart でマッチした曲の一覧を unite で表示
+" :ITunesBGMStart でマッチした曲の一覧を unite で表示
 " Use unite.vim
 :Unite bgm
 ```
