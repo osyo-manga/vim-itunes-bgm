@@ -33,6 +33,6 @@ iTunes ストアのサンプル曲の再生を非同期で行う
 
 ## Screencapture
 
-![](http://i.gyazo.com/aeba838ff832a80491cc817eb8098e6d.png)
+![](http://i.gyazo.com/5946b18e84a0bc5be9e43efdd29757ea.png)
 
 
