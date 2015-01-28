@@ -8,6 +8,7 @@ let s:Random = s:V.import("Random")
 
 let s:play_list = {
 \	"list" : [],
+\	"history" : [],
 \	"mplayer" : itunes_bgm#mplayer#make(),
 \	"now_music" : {},
 \	"_is_stop" : 1,
@@ -28,6 +29,8 @@ function! s:play_list.play(...)
 	endif
 	let self._is_stop = 0
 	call self.mplayer.play(self.now_music.previewUrl)
+	call add(self.history, self.now_music)
+	let self.history = self.history[:100]
 endfunction
 
 

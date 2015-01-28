@@ -3,8 +3,8 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:source = {
-\	"name" : "bgm",
-\	"description" : "bgm-playlist",
+\	"name" : "itunes_bgm/history",
+\	"description" : "itunes_bgm-history",
 \	"action_table" : {
 \		"play" : {
 \			"is_selectable" : 0,
@@ -16,25 +16,26 @@ let s:source = {
 
 
 function! s:source.action_table.play.func(candidate)
-	call bgm#play(a:candidate.source__music)
+	call itunes_bgm#play(a:candidate.source__music)
 endfunction
 
 
 function! s:source.gather_candidates(args, context)
-	let playlist = bgm#playlist()
+	let playlist = itunes_bgm#history()
 	if empty(playlist)
 		return []
 	endif
-	let now = bgm#now_playing()
-	return map(playlist, '{
-\		"word" : (v:val is now ? "* " : "  ") . v:val.trackName . " - " . v:val.artistName,
+	return map(reverse(playlist), '{
+\		"word" : v:val.trackName . " - " . v:val.artistName,
 \		"source__music" : v:val,
+\		"action__path"  : v:val.trackViewUrl,
 \		"default_action" : "play",
+\		"kind" : "uri",
 \	}')
 endfunction
 
 
-function! unite#sources#bgm#define()
+function! unite#sources#itunes_bgm_history#define()
 	return s:source
 endfunction
 

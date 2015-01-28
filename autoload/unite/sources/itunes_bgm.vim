@@ -29,7 +29,9 @@ function! s:source.gather_candidates(args, context)
 	return map(playlist, '{
 \		"word" : (v:val is now ? "* " : "  ") . v:val.trackName . " - " . v:val.artistName,
 \		"source__music" : v:val,
+\		"action__path"  : v:val.trackViewUrl,
 \		"default_action" : "play",
+\		"kind" : "uri",
 \	}')
 endfunction
 
