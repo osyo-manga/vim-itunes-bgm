@@ -47,6 +47,10 @@ function! s:request_to_url(request)
 endfunction
 
 
+" function! s:fitering(list)
+" 	return 
+" endfunction
+
 let s:update_enable = 0
 function! s:start(request)
 	let url = s:request_to_url(a:request)
@@ -55,10 +59,12 @@ function! s:start(request)
 	function! http.then(output, ...)
 		let s:update_enable = 0
 		if a:output.status != 200
-			echom "Failed bad reques"
-			return
+			return itunes_bgm#echo("Failed bad reques")
 		end
 		let results = s:JSON.decode(a:output.content).results
+		if empty(results)
+			return itunes_bgm#echo("Not found music.")
+		endif
 		let s:play_list.list = results
 		call s:play_list.start()
 	endfunction
@@ -66,13 +72,17 @@ function! s:start(request)
 endfunction
 
 
+
+let g:itunes_bgm#default_itunes_api_request = get(g:, "itunes_bgm#default_itunes_api_request", {})
+
 function! itunes_bgm#start_by_request(request)
-	call s:start(a:request)
+	let request = extend(extend({ "country" : "JP", "entity" : "song", "media" : "music" }, deepcopy(g:itunes_bgm#default_itunes_api_request)), a:request)
+	call s:start(request)
 endfunction
 
 
 function! itunes_bgm#start_by_term(term)
-	return itunes_bgm#start_by_request({ "term" : a:term, "country" : "JP", "entity" : "musicTrack" })
+	return itunes_bgm#start_by_request({ "term" : a:term })
 endfunction
 
 
@@ -91,8 +101,8 @@ function! itunes_bgm#next()
 endfunction
 
 
-function! itunes_bgm#play(music)
-	call s:play_list.play(a:music)
+function! itunes_bgm#play(...)
+	call call(s:play_list.play, a:000, s:play_list)
 endfunction
 
 
