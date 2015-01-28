@@ -3,6 +3,11 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
+function! itunes_bgm#echo(str)
+	echo "itunes-bgm.vim : " . a:str
+endfunction
+
+
 call vital#of("itunes_bgm").unload()
 let s:V = vital#of("itunes_bgm")
 function! itunes_bgm#get_vital()
@@ -48,6 +53,7 @@ function! s:start(request)
 	let http = s:Reunions.http_get(url)
 	let s:update_enable = 1
 	function! http.then(output, ...)
+		let s:update_enable = 0
 		if a:output.status != 200
 			echom "Failed bad reques"
 			return
@@ -55,8 +61,8 @@ function! s:start(request)
 		let results = s:JSON.decode(a:output.content).results
 		let s:play_list.list = results
 		call s:play_list.start()
-		let s:update_enable = 0
 	endfunction
+	call itunes_bgm#echo("start search...")
 endfunction
 
 
@@ -93,6 +99,12 @@ endfunction
 function! itunes_bgm#playlist()
 	return copy(s:play_list.list)
 endfunction
+
+
+function! itunes_bgm#history()
+	return copy(s:play_list.history)
+endfunction
+
 
 
 function! itunes_bgm#now_playing()
