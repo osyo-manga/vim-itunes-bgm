@@ -28,7 +28,7 @@ iTunes ストアのサンプル曲の再生を非同期で行う
 
 " :ITunesBGMStart でマッチした曲の一覧を unite で表示
 " Use unite.vim
-:Unite bgm
+:Unite itunes_bgm
 ```
 
 ## Screencapture
