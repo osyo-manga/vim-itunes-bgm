@@ -51,6 +51,27 @@ endfunction
 " 	return 
 " endfunction
 
+
+function! itunes_bgm#search(request)
+	let url = s:request_to_url(a:request)
+	let http = s:Reunions.http_get(url)
+	let http._respons = { "http" : http }
+	function! http.then(output, ...)
+		if a:output.status != 200
+			return itunes_bgm#echo("Failed bad reques")
+		end
+		let results = s:JSON.decode(a:output.content).results
+		if empty(results)
+			return itunes_bgm#echo("Not found music.")
+		endif
+		call s:Reunions.update_in_cursorhold(1)
+		return self._respons.then(results)
+	endfunction
+	call itunes_bgm#echo("start search...")
+	return http._respons
+endfunction
+
+
 let s:update_enable = 0
 function! s:start(request)
 	let url = s:request_to_url(a:request)
@@ -71,6 +92,12 @@ function! s:start(request)
 	call itunes_bgm#echo("start search...")
 endfunction
 
+
+
+function! itunes_bgm#start_by_playlist(list)
+	let s:play_list.list = results
+	call s:play_list.start()
+endfunction
 
 
 let g:itunes_bgm#default_itunes_api_request = get(g:, "itunes_bgm#default_itunes_api_request", {})
@@ -129,7 +156,7 @@ endfunction
 
 function! s:update()
 	if s:play_list.is_stop() == 0 || s:update_enable
-		call s:Reunions.update_in_cursorhold(1)
+		call s:Reunions.update_in_cursorhold(0)
 	endif
 endfunction
 
@@ -137,6 +164,6 @@ endfunction
 augroup reunions-itunes_bgm
 	autocmd!
 	autocmd CursorHold * call s:update()
-	autocmd VimLeave * call s:play_list.exit()
+	autocmd VimLeave * call itunes_bgm#stop()
 augroup END
 
