@@ -74,6 +74,7 @@ endfunction
 
 let s:update_enable = 0
 function! s:start(request)
+	call itunes_bgm#stop()
 	let url = s:request_to_url(a:request)
 	let http = s:Reunions.http_get(url)
 	let s:update_enable = 1
