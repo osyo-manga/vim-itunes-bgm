@@ -2,6 +2,8 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
+let g:itunes_bgm#mplayer#bin = get(g:, "itunes_bgm#mplayer#bin", "mplayer")
+
 
 let s:mplayer = {}
 function! s:mplayer.play(music, ...)
@@ -9,7 +11,7 @@ function! s:mplayer.play(music, ...)
 	if self.exit() != 1
 		return
 	endif
-	let self.process = itunes_bgm#get_reunions().process("mplayer " . a:music)
+	let self.process = itunes_bgm#get_reunions().process(g:itunes_bgm#mplayer#bin . " -slave -really-quiet " . a:music)
 endfunction
 
 
