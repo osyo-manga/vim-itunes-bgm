@@ -156,7 +156,7 @@ endfunction
 
 function! s:update()
 	if s:play_list.is_stop() == 0 || s:update_enable
-		call s:Reunions.update_in_cursorhold(0)
+		call s:Reunions.update_in_cursorhold(1)
 	endif
 endfunction
 
